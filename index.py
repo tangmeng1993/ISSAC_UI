@@ -3,7 +3,6 @@ import os
 import dialogflow
 import requests
 import json
-import pusher
 
 app = Flask(__name__)
 
