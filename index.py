@@ -18,33 +18,6 @@ def index():
     print('here is main')
     return render_template('index.html')
 
-@app.route('/test', methods=['POST'])
-def get_movie_detail():
-    print('here is get_movie_detail')
-    data = request.get_json(silent=True,force=True)
-    print(data['queryResult']['intent']['displayName'])
-
-    try:
-
-        movie = data['queryResult']['parameters']['movie']
-        api_key = os.getenv('OMDB_API_KEY')
-        
-        movie_detail = requests.get('http://www.omdbapi.com/?t={0}&apikey={1}'.format(movie, api_key)).content
-        movie_detail = json.loads(movie_detail)
-
-        response =  """
-            Title : {0}
-            Released: {1}
-            Actors: {2}
-            Plot: {3}
-        """.format(movie_detail['Title'], movie_detail['Released'], movie_detail['Actors'], movie_detail['Plot'])
-    except:
-        response = "Could not get movie detail at the moment, please try again"
-    
-    reply = { "fulfillmentText": response }
-    
-    return jsonify(reply)
-
 def detect_intent_texts(project_id, session_id, text,knowledge_base_id, language_code):
     import dialogflow_v2beta1 as dialogflow
     session_client = dialogflow.SessionsClient()
